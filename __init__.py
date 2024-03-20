@@ -77,31 +77,38 @@ def enregistrer_client():
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
 
-@app.route('/add_book', methods=['POST'])
-def add_book():
+
+#Enregistrer un client ----------------------------------------------------------------------------------------------------------
+
+@app.route('/enregistrer_livre', methods=['GET'])
+def enregistrer_livre():
+    return render_template('enregistrer_livre.html')  # afficher le formulaire
+    
+@app.route('/enregistrer_livre', methods=['POST'])
+def enregistrer_livre():
     if request.method == 'POST':
-        title = request.form['title']
-        author = request.form['author']
-        copies_available = int(request.form['copies_available'])
+        titre = request.form['titre']
+        auteur = request.form['auteur']
+        exemplaires = int(request.form['exemplaires'])
 
-        new_book = Book(title=title, author=author, copies_available=copies_available)
-        db.session.add(new_book)
-        db.session.commit()
+        # Connexion à la base de données
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
 
-        return redirect(url_for('all_books'))
+        # Exécution de la requête SQL pour insérer un nouveau livre
+        cursor.execute('INSERT INTO livres (titre, auteur, exemplaires_disponibles) VALUES (?, ?, ?)', (titre, auteur, exemplaires))
+        conn.commit()
+        conn.close()
+        return redirect('/consultation_livres/')
 
-@app.route('/delete_book/<int:id>')
-def delete_book(id):
-    book_to_delete = Book.query.get_or_404(id)
-    db.session.delete(book_to_delete)
-    db.session.commit()
-    return redirect(url_for('all_books'))
-
-# Route pour afficher tous les livres disponibles
-@app.route('/all_books')
-def all_books():
-    books = Book.query.filter_by(copies_available > 0).all()
-    return render_template('all_books.html', books=books)
+@app.route('/consultation_livres/')
+def ReadBDD():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM livres;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_data.html', data=data)
 
 
 if __name__ == "__main__":
