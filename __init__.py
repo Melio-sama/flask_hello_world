@@ -81,11 +81,11 @@ def enregistrer_client():
 #Enregistrer un client ----------------------------------------------------------------------------------------------------------
 
 @app.route('/enregistrer_livre', methods=['GET'])
-def enregistrer_livre():
+def afficher_formulaire_enregistrement_livre():
     return render_template('enregistrer_livre.html')  # afficher le formulaire
-    
+
 @app.route('/enregistrer_livre', methods=['POST'])
-def voir_livre():
+def enregistrer_livre():
     if request.method == 'POST':
         titre = request.form['titre']
         auteur = request.form['auteur']
@@ -102,14 +102,13 @@ def voir_livre():
         return redirect('/consultation_livres/')
 
 @app.route('/consultation_livres/')
-def ReadBDD():
+def consulter_livres():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM livres;')
     data = cursor.fetchall()
     conn.close()
     return render_template('consultation_livres.html', data=data)
-
 
 if __name__ == "__main__":
   app.run(debug=True)
