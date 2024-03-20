@@ -110,5 +110,24 @@ def consulter_livres():
     conn.close()
     return render_template('consultation_livres.html', data=data)
 
+@app.route('/rechercher_livres', methods=['GET'])
+def formrechercher_livres():
+    return render_template('rechercher_livres.html')  # afficher le formulaire
+
+@app.route('/rechercher_livres', methods=['POST'])
+def rechercher_livres():
+    titre = request.form['id']
+    
+
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécution de la requête SQL pour insérer un nouveau client
+    cursor.execute('SELECT * FROM livres WHERE titre LIKE ?', ('%' + terme_recherche + '%',))
+    livres = cursor.fetchall()
+    conn.close()
+    return redirect('/consultation_livres/')
+    
 if __name__ == "__main__":
   app.run(debug=True)
