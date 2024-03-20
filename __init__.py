@@ -85,7 +85,7 @@ def enregistrer_livre():
     return render_template('enregistrer_livre.html')  # afficher le formulaire
     
 @app.route('/enregistrer_livre', methods=['POST'])
-def enregistrer_livre():
+def voir_livre():
     if request.method == 'POST':
         titre = request.form['titre']
         auteur = request.form['auteur']
