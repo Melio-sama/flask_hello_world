@@ -8,10 +8,15 @@
 <body>
     <h1>Rechercher des livres</h1>
 
-    <form action="/rechercher_livres" method="POST">
-        <label for="terme_recherche">Terme de recherche :</label>
-        <input type="text" id="terme_recherche" name="terme_recherche" required>
+    <form action="/rechercher_livres" method="GET">
+        <label for="titre_livre">Titre du livre :</label>
+        <input type="text" id="titre_livre" name="titre_livre" required>
         <button type="submit">Rechercher</button>
     </form>
+
+    <!-- Ici sera affiché le résultat de la recherche -->
+    <div id="resultat_recherche">
+        <!-- Le résultat de la recherche sera affiché ici -->
+    </div>
 </body>
 </html>
