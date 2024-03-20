@@ -76,6 +76,33 @@ def enregistrer_client():
     conn.commit()
     conn.close()
     return redirect('/consultation/')  # Rediriger vers la page d'accueil après l'enregistrement
-                                                                                                                                       
+
+@app.route('/add_book', methods=['POST'])
+def add_book():
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        copies_available = int(request.form['copies_available'])
+
+        new_book = Book(title=title, author=author, copies_available=copies_available)
+        db.session.add(new_book)
+        db.session.commit()
+
+        return redirect(url_for('all_books'))
+
+@app.route('/delete_book/<int:id>')
+def delete_book(id):
+    book_to_delete = Book.query.get_or_404(id)
+    db.session.delete(book_to_delete)
+    db.session.commit()
+    return redirect(url_for('all_books'))
+
+# Route pour afficher tous les livres disponibles
+@app.route('/all_books')
+def all_books():
+    books = Book.query.filter_by(copies_available > 0).all()
+    return render_template('all_books.html', books=books)
+
+
 if __name__ == "__main__":
   app.run(debug=True)
