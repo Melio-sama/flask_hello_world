@@ -108,7 +108,7 @@ def ReadBDD():
     cursor.execute('SELECT * FROM livres;')
     data = cursor.fetchall()
     conn.close()
-    return render_template('read_data.html', data=data)
+    return render_template('consultation_livres.html', data=data)
 
 
 if __name__ == "__main__":
