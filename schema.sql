@@ -6,3 +6,12 @@ CREATE TABLE clients (
     prenom TEXT NOT NULL,
     adresse TEXT NOT NULL
 );
+
+
+CREATE TABLE livres (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titre TEXT NOT NULL,
+    auteur TEXT NOT NULL,
+    annee INTEGER,
+    disponible BOOLEAN NOT NULL DEFAULT 1
+);
