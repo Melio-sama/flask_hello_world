@@ -114,20 +114,24 @@ def consulter_livres():
 def formrechercher_livres():
     return render_template('rechercher_livres.html')  # afficher le formulaire
 
+
 @app.route('/rechercher_livres', methods=['POST'])
 def rechercher_livres():
-    titre = request.form['id']
-    
-
+    terme_recherche = request.form['terme_recherche']  # Récupérer le terme de recherche depuis le formulaire
     # Connexion à la base de données
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-
-    # Exécution de la requête SQL pour insérer un nouveau client
+    # Exécution de la requête SQL pour rechercher les livres
     cursor.execute('SELECT * FROM livres WHERE titre LIKE ?', ('%' + terme_recherche + '%',))
     livres = cursor.fetchall()
     conn.close()
-    return redirect('/consultation_livres/')
+    return render_template('resultats_recherche.html', terme_recherche=terme_recherche, livres=livres)
+
+@app.route('/resultats_recherche')
+def afficher_resultats_recherche():
+    terme_recherche = request.args.get('terme_recherche', '')  # Récupérer le terme de recherche depuis l'URL
+    # Vous n'avez pas besoin d'appeler la fonction rechercher_livres ici car les résultats de recherche sont déjà récupérés dans la route /rechercher_livres
+    return render_template('resultats_recherche.html', terme_recherche=terme_recherche)
     
 if __name__ == "__main__":
   app.run(debug=True)
