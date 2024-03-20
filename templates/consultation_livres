@@ -1,8 +1,8 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Livres</title>
+    <title>Liste des Livres</title>
 </head>
 <body>
     <h1>Liste des Livres</h1>
@@ -11,14 +11,16 @@
             <th>ID</th>
             <th>Création</th>
             <th>Titre Livre</th>
+            <th>Auteur</th> <!-- Ajout de la colonne pour l'auteur -->
+            <th>Exemplaires Disponibles</th> <!-- Ajout de la colonne pour les exemplaires disponibles -->
         </tr>
         {% for row in data %}
         <tr>
             <td>{{ row[0] }}</td>
             <td>{{ row[1] }}</td>
             <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td>{{ row[4] }}</td>
+            <td>{{ row[3] }}</td> <!-- Ajout de la cellule pour l'auteur -->
+            <td>{{ row[4] }}</td> <!-- Ajout de la cellule pour les exemplaires disponibles -->
         </tr>
         {% endfor %}
     </table>
